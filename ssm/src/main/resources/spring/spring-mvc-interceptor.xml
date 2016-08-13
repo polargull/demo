@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+    <!-- 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/shopcart/addShopcart.json" />
+			<mvc:mapping path="/shopcart/getMyShopcart.json" />
+			<mvc:mapping path="/shopcart/removeProduct.json" />
+			<mvc:mapping path="/shopcart/modifyProductNum.json" />
+			<mvc:mapping path="/balance/balance.json" />
+			<mvc:mapping path="/order/createOrder.json" />
+			<mvc:mapping path="/order/cancleOrder.json" />
+			<mvc:mapping path="/order/toPayOrder.json" />
+			<mvc:mapping path="/order/payOrder.json" />
+			<mvc:mapping path="/order/signOrder.json" />
+			<mvc:mapping path="/order/getMyOrderDetail.json" />
+			<mvc:mapping path="/order/getOrderList.json" />
+			<bean class="com.polarbear.web.interceptor.login.LoginUserInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/back/*" />			
+			<bean class="com.polarbear.web.interceptor.login.LoginAdminInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	 -->
+</beans>

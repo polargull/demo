@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.UserExtMapper">
+	<insert id="insert">
+		insert into User_Ext
+		(
+			id,
+			uid,
+			account_no,
+			birth_date
+		)
+		values
+		(
+			#{id},
+			#{uid},
+			#{account_no},
+			#{birth_date}
+		)
+	</insert>
+	<update id="update">
+		update user_ext
+		<set>
+			<if test="accountNo != null">
+				account_no = #{accountNo},
+      		</if>
+      		<if test="birthDate != null">
+				birth_date = #{birthDate},
+      		</if>
+		</set>
+		where
+			id = #{id}
+	</update>
+	<delete id="delete">
+		delete from user_ext where id = #{id}
+	</delete>
+	<select id="getById" resultType="userExt">
+		select
+			*
+		from
+			user_ext
+		where
+			id = #{id}
+	</select>
+	<select id="list" resultType="userExt">
+		select
+			*
+		from
+			user_ext
+		<include refid="userWhere" />
+	</select>
+	<select id="count" resultType="Integer">
+		select
+			count(id)
+		from
+			user_ext
+		<include refid="userWhere" />
+	</select>
+	<sql id="userWhere">
+		<where>
+			<if test="accountNo != null and accountNo != ''">
+				and account_no = #{accountNo}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and birth_date = #{birthDate}
+			</if>			
+		</where>
+		<if test="sort != null and sort != ''">
+			order by ${sort}
+		</if>
+		<if test="offset != null and size != null">
+			limit #{offset}, #{size}
+		</if>
+	</sql>
+</mapper>
