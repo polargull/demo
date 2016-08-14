@@ -13,6 +13,12 @@ public class Order {
     public Order() {
     }
 
+    public Order(long uid, double totalPrice) {
+        super();
+        this.uid = uid;
+        this.totalPrice = totalPrice;
+    }
+    
     public Order(long id, User user, double totalPrice) {
         super();
         this.id = id;

@@ -10,11 +10,11 @@ public class SubOrder {
     public SubOrder() {
     }
 
-    public SubOrder(long productId, int nums, Order order) {
+    public SubOrder(long productId, int nums, long orderId) {
         super();
         this.productId = productId;
         this.nums = nums;
-        this.order = order;
+        this.orderId = orderId;
     }
 
     public long getId() {
