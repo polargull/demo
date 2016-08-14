@@ -1,4 +1,4 @@
-package ssm;
+package ssm.unit.dao;
 
 import javax.annotation.Resource;
 
@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ssm.entity.Order;
 import com.ssm.entity.SubOrder;
-import com.ssm.mapper.OrderMapper;
+import com.ssm.mapper.order.OrderMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/spring-dao.xml" })

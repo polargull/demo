@@ -1,4 +1,4 @@
-package ssm;
+package ssm.unit.dao;
 
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ssm.entity.User;
-import com.ssm.mapper.UserMapper;
+import com.ssm.mapper.user.UserMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/spring-dao.xml" })

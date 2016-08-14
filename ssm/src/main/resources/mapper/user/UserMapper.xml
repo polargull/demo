@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ssm.mapper.SubOrderMapper">
+<mapper namespace="com.ssm.mapper.user.UserMapper">
 	<insert id="insert">
-		insert into sub_order
+		insert into User
 		(
 			id,
-			product_id,
-			nums,
-			order_id
+			name,
+			pwd
 		)
 		values
 		(
 			#{id},
-			#{productId},
-			#{nums},
-			#{orderId}
+			#{name},
+			#{pwd}
 		)
 	</insert>
-	
-	<delete id="delete">
-		delete from sub_order where id = #{id}
-	</delete>
-	<select id="getById" resultType="subOrder">
-		select
-			so.id,
-			so.product_id,
-			so.nums,
-			so.order_id,
-			o.id "order.id",
-			o.uid "order.user.id",
-			o.total_price "order.totalPrice"
-		from
-			sub_order so
-		left join
-			orders o
-		on
-			so.order_id = o.id
+	<update id="update">
+		update user
+		<set>
+			<if test="name != null">
+				name = #{name},
+      		</if>
+      		<if test="pwd != null">
+				pwd = #{pwd},
+      		</if>
+		</set>
 		where
-			so.id = #{id}
+			id = #{id}
+	</update>
+	<delete id="delete">
+		delete from user where id = #{id}
+	</delete>
+	<select id="getById" resultType="user">
+		select
+			u.id,
+			u.name,
+			u.pwd,
+			ue.id "userExt.id",
+			ue.account_no "userExt.accountNo",
+			ue.birth_date "userExt.birthDate"
+		from
+			user u
+		left join
+			user_ext ue
+		on
+			u.id = ue.uid
+		where
+			u.id = #{id}
 	</select>
 	<select id="list" resultType="user">
 		select
