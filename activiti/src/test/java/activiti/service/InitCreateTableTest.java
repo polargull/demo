@@ -3,14 +3,20 @@ package activiti.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.spring.ProcessEngineFactoryBean;
@@ -41,14 +47,15 @@ public class InitCreateTableTest {
     Test1Mapper test1Mapper;
     @Resource
     TaskService taskService;
+    @Resource
+    HistoryService historyService;
+    final String PROCESS_DEF_KEY = "baoxiao2";
 
+    /**
+     * 启动部署流程定义
+     */
     // @Test
     public final void test1CreateTableAndAutoDeploy() {
-        /**
-         * DB_SCHEMA_UPDATE_TRUE：如果不存在表就创建表，存在就直接使用
-         * DB_SCHEMA_UPDATE_FALSE：如果不存在表就抛出异常
-         * DB_SCHEMA_UPDATE_CREATE_DROP：每次都先删除表，再创建新的表
-         */
         assertNotNull(processEngine);
         assertNotNull(repositoryService);
         long count = repositoryService.createProcessDefinitionQuery().count();
@@ -56,45 +63,78 @@ public class InitCreateTableTest {
         System.out.println("test1");
     }
 
+    /**
+     * 申请提交启动流程
+     */
     // @Test
-    public void test2Test1() {
-        Test1 baoxiao = test1Mapper.selectById(1l);
-        assertEquals(1, baoxiao.getId());
-        test1Mapper.updateProcess(baoxiao.getId(), "100");
-        Test1 baoxiao2 = test1Mapper.selectById(1l);
-        assertEquals("100", baoxiao2.getProcessId());
-    }
-
-//    @Test
     public void test2StartProcess() {
+        // 设置启动人
+        identityService.setAuthenticatedUserId("fuwei1");
+        // 启动流程和业务绑定
+        Map<String, Object> vars = new HashMap<String, Object>();
+        List<String> users = Arrays.asList("si.cong", "zhang.lin");
+        vars.put("users", users);
         Test1 baoxiao = test1Mapper.selectById(1l);
-        identityService.setAuthenticatedUserId("fuwei2");
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess", String.valueOf(baoxiao.getId()));
-        test1Mapper.updateProcess(baoxiao.getId(), processInstance.getProcessInstanceId());
-
-        List<Task> taskLst = taskService.createTaskQuery().processInstanceId(processInstance.getProcessInstanceId()).list();
-        for (Task task : taskLst) {
-            System.out.println(task.getId() + " " + task.getName());
-            task.setCategory("zhuanyuan");
-            taskService.saveTask(task);
-        }
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(PROCESS_DEF_KEY, String.valueOf(baoxiao.getId()), vars);
+        String processInsId = processInstance.getProcessInstanceId();
+        test1Mapper.updateProcess(baoxiao.getId(), processInsId);
+        setWaitApprove(processInsId);
     }
 
+    /**
+     * 查询待审批任务
+     */
+    // @Test
+    public void test3GetWaitApproveTask() {
+        List<Task> siCongtaskLst = taskService.createTaskQuery().taskAssignee("si.cong").list();
+        for (Task task : siCongtaskLst) {
+            System.out.println("si.cong:" + task.toString());
+            complete(task);
+        }
+        List<Task> zLinTaskList = taskService.createTaskQuery().taskAssignee("zhang.lin").list();
+        for (Task task : zLinTaskList) {
+            System.out.println("zhang.lin:" + task.toString());
+            complete(task);
+        }
+        // List<Task> taskLst =
+        // taskService.createTaskQuery().taskCategory("zhuanyuan").list();
+        // for (Task task : taskLst) {
+        // System.out.println(task.toString());
+        // taskService.claim(task.getId(), "xiaonvhai");
+        // taskService.complete(task.getId(), null);
+        // }
+    }
+
+    /**
+     * 查询已审批任务
+     */
     @Test
-    public void test3GetTask() {
-        List<Task> taskLst = taskService.createTaskQuery().taskAssignee("wanglin").list();
-        for (Task task : taskLst) {
-            System.out.println(task.toString());
-//            taskService.claim(task.getId(), "wanglin");
-          taskService.complete(task.getId(), null);
+    public void test4GetAlreadyApproveTask() {
+        ProcessDefinition pd = repositoryService.createProcessDefinitionQuery().processDefinitionKey(PROCESS_DEF_KEY).singleResult();
+        List<HistoricTaskInstance> lst = historyService.createHistoricTaskInstanceQuery().processDefinitionId(pd.getId()).taskDeleteReason("completed").taskAssignee("si.cong")
+                .list();
+        for (HistoricTaskInstance hiTask : lst) {
+            System.out.println(hiTask.getProcessDefinitionId() + " >> " + hiTask.getProcessInstanceId() + " >> " + hiTask.toString() + " >> " + hiTask.getAssignee() + " >> "
+                    + hiTask.getDeleteReason());
         }
-//        List<Task> taskLst = taskService.createTaskQuery().taskCategory("zhuanyuan").list();
-//        for (Task task : taskLst) {
-//            System.out.println(task.toString());
-//            taskService.claim(task.getId(), "xiaonvhai");
-//            taskService.complete(task.getId(), null);
-//        }
     }
+
     // 246 添加意见
     // 295 签收
+
+    private void complete(Task task) {
+        taskService.complete(task.getId());
+        String processInsId = task.getProcessInstanceId();
+        setWaitApprove(processInsId);
+    }
+
+    private void setWaitApprove(String processInsId) {
+        Test1 test = test1Mapper.selectByProcessId(processInsId);
+        Task nextTask = taskService.createTaskQuery().processInstanceId(processInsId).singleResult();
+        String status = "审批通过";
+        if (nextTask != null) {
+            status = "待" + nextTask.getAssignee() + "审批";
+        }
+        test1Mapper.updateStatus(test.getId(), status);
+    }
 }

@@ -10,4 +10,8 @@ public interface Test1Mapper {
     Test1 selectById(long id);
 
     void updateProcess(@Param("id") long id, @Param("processId") String processId);
+    
+    void updateStatus(@Param("id") long id, @Param("status") String status);
+    
+    Test1 selectByProcessId(String processId);
 }
