@@ -1,4 +1,4 @@
-package com.ssm.service;
+package com.ssm.service.order;
 
 import org.springframework.stereotype.Service;
 

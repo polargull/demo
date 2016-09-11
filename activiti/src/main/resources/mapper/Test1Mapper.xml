@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.activiti.mapper.Test1Mapper">
+	<insert id="insert">
+		insert into test1
+		(
+		id,
+		reason,
+		status
+		)
+		values
+		(
+		#{id},
+		#{reason},
+		#{status}
+		)
+	</insert>
+	<select id="selectById"  resultType="test1">
+		select
+			id,
+			reason,
+			status,
+			process_id
+		from
+			test1
+		where
+			id = #{id}
+	</select>
+	<update id="updateProcess">
+		update test1
+		<set>
+			process_id = #{processId}
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+</mapper>
