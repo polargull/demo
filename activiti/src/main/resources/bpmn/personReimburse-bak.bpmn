@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test" id="m1473652250570" name="">
+  <process id="personReimburse" name="personReimburse" isExecutable="true" isClosed="false" processType="None">
+    <subProcess id="subprocess1" name="Sub Process">
+      <userTask id="apartmentApproveTask" name="apartmentApproveTask" activiti:assignee="${user}">
+        <extensionElements>
+          <activiti:taskListener event="complete" delegateExpression="${apartmentApproveCompleteListener}"></activiti:taskListener>
+        </extensionElements>
+        <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${users}" activiti:elementVariable="user">
+          <completionCondition>${reject==1}</completionCondition>
+        </multiInstanceLoopCharacteristics>
+      </userTask>
+      <userTask id="financialCommisonApproveTask" name="financialCommisonApproveTask" activiti:candidateGroups="financialCommison"></userTask>
+      <sequenceFlow id="_3" sourceRef="financialCommisonApproveTask" targetRef="financialAccountantApproveTask"></sequenceFlow>
+      <userTask id="financialDirectorApproveTask" name="financialDirectorApproveTask" activiti:candidateGroups="financialDirector"></userTask>
+      <sequenceFlow id="_14" sourceRef="financialDirectorApproveTask" targetRef="perRemEnd"></sequenceFlow>
+      <userTask id="financialAccountantApproveTask" name="financialAccountantApproveTask" activiti:candidateGroups="financialAccountant"></userTask>
+      <sequenceFlow id="_12" sourceRef="financialAccountantApproveTask" targetRef="financialOfficerApproveTask"></sequenceFlow>
+      <endEvent id="perRemEnd" name="perRemEnd"></endEvent>
+      <userTask id="financialOfficerApproveTask" name="financialOfficerApproveTask" activiti:candidateGroups="financialOfficer"></userTask>
+      <sequenceFlow id="_13" sourceRef="financialOfficerApproveTask" targetRef="financialDirectorApproveTask"></sequenceFlow>
+      <startEvent id="perRemStart" name="perRemStart"></startEvent>
+      <sequenceFlow id="_9" sourceRef="perRemStart" targetRef="apartmentApproveTask"></sequenceFlow>
+      <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="flow5" sourceRef="apartmentApproveTask" targetRef="exclusivegateway4"></sequenceFlow>
+      <sequenceFlow id="flow6" sourceRef="exclusivegateway4" targetRef="financialCommisonApproveTask">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reject==0}]]></conditionExpression>
+      </sequenceFlow>
+      <endEvent id="errorendevent1" name="ErrorEnd">
+        <errorEventDefinition errorRef="oa_err"></errorEventDefinition>
+      </endEvent>
+      <sequenceFlow id="flow7" sourceRef="exclusivegateway4" targetRef="errorendevent1">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reject==1}]]></conditionExpression>
+      </sequenceFlow>
+    </subProcess>
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="subprocess1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="subprocess1">
+      <errorEventDefinition errorRef="oa_err"></errorEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask1" name="Service Task" activiti:class="com.activiti.delegateTask.RejectHandleTask"></serviceTask>
+    <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="servicetask1"></sequenceFlow>
+    <endEvent id="terminateendevent1" name="TerminateEndEvent">
+      <terminateEventDefinition></terminateEventDefinition>
+    </endEvent>
+    <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="terminateendevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_personReimburse">
+    <bpmndi:BPMNPlane bpmnElement="personReimburse" id="BPMNPlane_personReimburse">
+      <bpmndi:BPMNShape bpmnElement="subprocess1" id="BPMNShape_subprocess1">
+        <omgdc:Bounds height="261.0" width="802.0" x="36.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="apartmentApproveTask" id="BPMNShape_apartmentApproveTask">
+        <omgdc:Bounds height="55.0" width="145.0" x="217.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="financialCommisonApproveTask" id="BPMNShape_financialCommisonApproveTask">
+        <omgdc:Bounds height="60.0" width="120.0" x="81.0" y="185.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="financialDirectorApproveTask" id="BPMNShape_financialDirectorApproveTask">
+        <omgdc:Bounds height="55.0" width="115.0" x="591.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="financialAccountantApproveTask" id="BPMNShape_financialAccountantApproveTask">
+        <omgdc:Bounds height="55.0" width="160.0" x="241.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="perRemEnd" id="BPMNShape_perRemEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="776.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="financialOfficerApproveTask" id="BPMNShape_financialOfficerApproveTask">
+        <omgdc:Bounds height="55.0" width="125.0" x="431.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="perRemStart" id="BPMNShape_perRemStart">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="400.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="errorendevent1" id="BPMNShape_errorendevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="485.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="516.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="557.0" y="350.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="terminateendevent1" id="BPMNShape_terminateendevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="707.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_3" id="BPMNEdge__3">
+        <omgdi:waypoint x="201.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="241.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14" id="BPMNEdge__14">
+        <omgdi:waypoint x="706.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="776.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12">
+        <omgdi:waypoint x="401.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="431.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13">
+        <omgdi:waypoint x="556.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9">
+        <omgdi:waypoint x="36.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="362.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="420.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="141.0" y="185.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="440.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="485.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="104.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="301.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="531.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="609.0" y="350.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="662.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="707.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
