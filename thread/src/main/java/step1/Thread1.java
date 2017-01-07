@@ -2,6 +2,7 @@ package step1;
 
 /**
  * Created by fuyuanpu on 2017/1/7.
+ * 创建、启动线程
  */
 public class Thread1 {
     public static void main(String[] args) {

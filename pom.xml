@@ -9,5 +9,6 @@
 	<modules>  
     <module>activiti</module>
 		<module>ssm</module>
-	</modules>
+        <module>thread</module>
+    </modules>
 </project>
