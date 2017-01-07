@@ -15,8 +15,8 @@ public class AlertTimerSingleton extends Timer {
         return alertTimerSingleton;
     }
 
-    public void schedule(AlertTask alertTask, long delay, long period) {
+    public void schedule(AlertTask alertTask, long period) {
         AlertTaskContainer.getInstance().put(alertTask.getName(), alertTask);
-        super.schedule(alertTask, delay, period);
+        super.schedule(alertTask, 1000, period);
     }
 }

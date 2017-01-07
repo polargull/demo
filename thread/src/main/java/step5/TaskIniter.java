@@ -16,9 +16,9 @@ public class TaskIniter {
         MericTask task2 = new MericTask("task2", 12, 5);
         MericTask task3 = new MericTask("task3", 13, 2);
 
-        AlertTimerSingleton.getInstance().schedule(new AlertTask(task1), 1000, task1.getPeriodMs());
-        AlertTimerSingleton.getInstance().schedule(new AlertTask(task2), 1000, task2.getPeriodMs());
-        AlertTimerSingleton.getInstance().schedule(new AlertTask(task3), 1000, task3.getPeriodMs());
+        AlertTimerSingleton.getInstance().schedule(new AlertTask(task1), task1.getPeriodMs());
+        AlertTimerSingleton.getInstance().schedule(new AlertTask(task2), task2.getPeriodMs());
+        AlertTimerSingleton.getInstance().schedule(new AlertTask(task3), task3.getPeriodMs());
     }
 
     public static void main(String[] args) throws InterruptedException {
