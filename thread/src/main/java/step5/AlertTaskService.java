@@ -19,7 +19,6 @@ public class AlertTaskService {
 
     public void deleteAlertTask(MericTask mericTask) {
         AlertTask alertTask = (AlertTask) AlertTaskContainer.getInstance().get(mericTask.getName());
-        alertTask.cancel();
         //delete db record
     }
     public void modifyAlertTask(MericTask mericTask) {
@@ -37,7 +36,6 @@ public class AlertTaskService {
         } else {
             mericTask.setStatus(0);
             AlertTask alertTask = (AlertTask) AlertTaskContainer.getInstance().get(mericTask.getName());
-            alertTask.cancel();
         }
         modifyAlertTask(mericTask);
     }

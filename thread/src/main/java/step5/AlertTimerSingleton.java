@@ -1,11 +1,12 @@
 package step5;
 
-import java.util.Timer;
+import java.util.concurrent.*;
 
 /**
  * Created by fuyuanpu on 2017/1/7.
  */
-public class AlertTimerSingleton extends Timer {
+public class AlertTimerSingleton {
+    private static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
     private static AlertTimerSingleton alertTimerSingleton = new AlertTimerSingleton();
 
     private AlertTimerSingleton() {
@@ -15,8 +16,7 @@ public class AlertTimerSingleton extends Timer {
         return alertTimerSingleton;
     }
 
-    public void schedule(AlertTask alertTask, long period) {
-        AlertTaskContainer.getInstance().put(alertTask.getName(), alertTask);
-        super.schedule(alertTask, 1000, period);
+    public Future<AlertTask> schedule(AlertTask alertTask, long period) {
+        return (Future<AlertTask>) scheduledExecutorService.scheduleAtFixedRate(alertTask, 1, period, TimeUnit.SECONDS);
     }
 }

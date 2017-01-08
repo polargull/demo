@@ -1,7 +1,6 @@
-package step5;
+package engine;
 
 import java.time.LocalDateTime;
-import java.util.TimerTask;
 
 /**
  * Created by fuyuanpu on 2017/1/7.
@@ -18,7 +17,7 @@ public class AlertTask implements Runnable {
     }
 
     private void handle(MericTask task) {
-        if (task.getPeriod() == 5) {
+        if (task.getPeriod() == 10) {
             try {
                 Thread.sleep(9000l);
             } catch (InterruptedException e) {
@@ -28,7 +27,4 @@ public class AlertTask implements Runnable {
         System.out.println("时间:" + LocalDateTime.now() + " " + task.toString());
     }
 
-    public String getName() {
-        return task.getName();
-    }
 }
