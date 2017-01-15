@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>demo1</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="http://v3.bootcss.com/examples/signin/signin.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="email" class="form-control" placeholder="Email address" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" required>
+        <div class="row" id="condition">
+            <div class="row">
+                <ul class="list-inline">
+                    <li><input type="text" class="form-control"/></li>
+                </ul>
+            </div>
+        </div>
+        <button id="btnNewCondition" type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="../js/template.js"></script>
+#[[<script type="text/javascript">
+    var newCondition = (function() {
+        var thold = {};
+        var $btnNewCon = $('#btnNewCondition');
+        var $divCondition =$('div #condition');
+        function init() {
+            $btnNewCon.on('click', function(e) {
+                create();
+            });
+        }
+        function create() {
+            addTemplate();
+            bindRemoveEvent();
+        }
+        function addTemplate() {
+            var html = template('tmp_new_condition', {});
+            $divCondition.append(html);
+        }
+        function bindRemoveEvent() {
+            var $btnConditionMinus = $('button[name="btnConditionMinus"]');
+            $btnConditionMinus.on('click', function(e) {
+                remove($(e.target));
+            });
+        }
+        function remove($curBtn){
+            var $divRow = $curBtn.closest('.row');
+            $divRow.remove();
+        }
+        function showHiddenMaxInput(){alert('showHidden');}
+        function getListValObj(){alert('getList');}
+        init();
+        return {
+            showHiddenMaxInput:showHiddenMaxInput,
+            getListValObj:getListValObj
+        }
+    })();
+    <!--mo.getListValObj();-->
+
+    $(function(){
+
+    });
+</script>
+<script id="tmp_new_condition" type="text/html">
+<div class="row">
+    <ul class="list-inline">
+        <li><input type="text" class="form-control"/></li>
+        <li>
+            <button type="button" name="btnConditionMinus" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-minus"></span>
+            </button>
+        </li>
+    </ul>
+</div>
+</script>
+]]#
+</body>
+</html>
