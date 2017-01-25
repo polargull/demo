@@ -15,6 +15,7 @@
             <div class="row">
                 <ul class="list-inline">
                     <li><input type="text" class="form-control"/></li>
+                    <li id="test">Click Here!</li>
                 </ul>
             </div>
         </div>
@@ -70,8 +71,16 @@
     })();
     <!--mo.getListValObj();-->
 
-    $(function(){
+    $(function() {
+          var obj = {
+              name: "John",
+              test: function() {
+                alert(this.name);
+                $("#test").unbind("click", obj.test);
+              }
+          };
 
+    $("#test").click(jQuery.proxy(obj, "test"));
     });
 </script>
 <script id="tmp_new_condition" type="text/html">
