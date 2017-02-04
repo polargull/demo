@@ -616,3 +616,23 @@
         return d
     }) : "undefined" != typeof exports ? module.exports = d: this.template = d
 } ();
+
+/**
+ * validTip jQuery Object method plugin
+ * @author fuwei 2017-2-3 10:30
+ */
+(function($){
+    $.fn.extend({
+        validTip:function(msg) {
+            this.tooltip('destroy');
+            var tip_attr = {
+                "data-template":'<div class="tooltip red-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+                "title":msg,
+                "data-trigger":""
+            };
+            this.attr(tip_attr).tooltip('show');
+            var $curObj = this;
+            setTimeout(function(){$curObj.tooltip('destroy');}, 3000);
+        }
+    });
+})($);
