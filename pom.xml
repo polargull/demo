@@ -18,5 +18,7 @@
         <module>thread</module>
         <module>alert</module>
         <module>boot</module>
+        <module>algorithms</module>
+        <module>util</module>
     </modules>
 </project>
