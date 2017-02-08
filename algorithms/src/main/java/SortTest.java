@@ -10,9 +10,10 @@ import java.util.Arrays;
  */
 public class SortTest {
     static boolean printOnOff = false;
+    static boolean outOnOff = true;
 
     public static void main(String[] args) {
-        int[] intsort = TestDataCreater.createRandomTestIntArray(10000);
+        int[] intsort = TestDataCreater.createRandomTestIntArray(10000 * 1);
         testMethod("javaApiSort", intsort);
         testMethod("bubbleSort", intsort);
         testMethod("xuanzeSort", intsort);
@@ -31,7 +32,7 @@ public class SortTest {
             long startTime = System.currentTimeMillis();
             bubbleSort.invoke(new SortTest(), copyArray);
             if (annotation != null) {
-                System.out.println("cost time:" + ((System.currentTimeMillis() - startTime))/1000);
+                System.out.println("cost time:" + ((System.currentTimeMillis() - startTime)) / 1000);
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -74,6 +75,7 @@ public class SortTest {
 
     /**
      * i5-5300U 2.3G 2.29G 大约1s 1000万
+     *
      * @param intsort
      */
     @RecordTime
@@ -82,7 +84,7 @@ public class SortTest {
     }
 
     public static void out(int[] intsort) {
-        if (true) {
+        if (!outOnOff) {
             return;
         }
         for (int i = 0; i < intsort.length; i++) {
