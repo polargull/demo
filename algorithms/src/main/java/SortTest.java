@@ -1,4 +1,5 @@
 import com.demo.annotation.RecordTime;
+import com.demo.util.TestDataCreater;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,8 +9,10 @@ import java.util.Arrays;
  * Created by fuwei on 2017/2/4.
  */
 public class SortTest {
+    static boolean printOnOff = false;
+
     public static void main(String[] args) {
-        int[] intsort = new int[]{8, 7, 6, 5, 4, 3, 2, 1, 0};
+        int[] intsort = TestDataCreater.createRandomTestIntArray(10000);
         testMethod("javaApiSort", intsort);
         testMethod("bubbleSort", intsort);
         testMethod("xuanzeSort", intsort);
@@ -19,7 +22,7 @@ public class SortTest {
         int n = intsort.length;
         int[] copyArray = new int[n];
         System.arraycopy(intsort, 0, copyArray, 0, n);
-        System.out.println(">>>>>> " + method);
+        System.out.println("\n>>>>>> " + method);
         System.out.print("src array:");
         out(copyArray);
         try {
@@ -28,7 +31,7 @@ public class SortTest {
             long startTime = System.currentTimeMillis();
             bubbleSort.invoke(new SortTest(), copyArray);
             if (annotation != null) {
-                System.out.println("cost time:" + (System.currentTimeMillis() - startTime));
+                System.out.println("cost time:" + ((System.currentTimeMillis() - startTime))/1000);
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -50,7 +53,7 @@ public class SortTest {
                     intsort[i] = intsort[j];
                     intsort[j] = temp;
                 }
-                out(intsort);
+                if (printOnOff) out(intsort);
             }
         }
     }
@@ -64,19 +67,31 @@ public class SortTest {
                     intsort[j] = intsort[j + 1];
                     intsort[j + 1] = temp;
                 }
-                out(intsort);
+                if (printOnOff) out(intsort);
             }
         }
     }
 
+    /**
+     * i5-5300U 2.3G 2.29G 大约1s 1000万
+     * @param intsort
+     */
     @RecordTime
     public static void javaApiSort(int[] intsort) {
         Arrays.sort(intsort);
     }
 
     public static void out(int[] intsort) {
-        for (int i : intsort)
-            System.out.print(i + " ");
+        if (true) {
+            return;
+        }
+        for (int i = 0; i < intsort.length; i++) {
+            System.out.print(intsort[i] + " ");
+            if (i == 1000) {
+                System.out.print("...");
+                break;
+            }
+        }
         System.out.print("\n");
     }
 }
