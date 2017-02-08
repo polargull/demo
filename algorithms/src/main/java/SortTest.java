@@ -7,16 +7,23 @@ import java.lang.reflect.Method;
  * Created by fuwei on 2017/2/4.
  */
 public class SortTest {
-
     public static void main(String[] args) {
-        System.out.println("hello world!");
-        int[] intsort = new int[]{3, 1, 6, 3, 5, 8, 0};
+        testMethod("bubbleSort", new int[]{8, 7, 6, 5, 4, 3, 2, 1, 0});
+        testMethod("xuanzeSort", new int[]{8, 7, 6, 5, 4, 3, 2, 1, 0});
+    }
+
+    private static void testMethod(String method, int[] intsort) {
+        System.out.println(">>>>>> " + method);
+        System.out.print("src array:");
         out(intsort);
         try {
-            Method bubbleSort = SortTest.class.getMethod("bubbleSort", int[].class);
+            Method bubbleSort = SortTest.class.getMethod(method, int[].class);
             RecordTime annotation = bubbleSort.getAnnotation(RecordTime.class);
-            System.out.println(annotation);
+            long startTime = System.currentTimeMillis();
             bubbleSort.invoke(new SortTest(), intsort);
+            if (annotation != null) {
+                System.out.println("cost time:" + (System.currentTimeMillis() - startTime));
+            }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -24,18 +31,34 @@ public class SortTest {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        System.out.print("sorted array:");
         out(intsort);
     }
 
     @RecordTime
-    public static void bubbleSort(int[] intsort) {
+    public static void xuanzeSort(int[] intsort) {
         for (int i = 0; i < intsort.length; i++) {
             for (int j = i + 1; j < intsort.length; j++) {
-                if (intsort[i] < intsort[j]) {
+                if (intsort[i] > intsort[j]) {
                     int temp = intsort[i];
                     intsort[i] = intsort[j];
                     intsort[j] = temp;
                 }
+                out(intsort);
+            }
+        }
+    }
+
+    @RecordTime
+    public static void bubbleSort(int[] intsort) {
+        for (int i = intsort.length - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (intsort[j] > intsort[j + 1]) {
+                    int temp = intsort[j];
+                    intsort[j] = intsort[j + 1];
+                    intsort[j + 1] = temp;
+                }
+                out(intsort);
             }
         }
     }
