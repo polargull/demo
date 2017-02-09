@@ -59,6 +59,10 @@ public class SortTest {
         }
     }
 
+    /**
+     * 从数组第一个元素开始,依次比较元素,若左值大于右值交换位置,否则不交换,然后右边值继续和后面的元素比较,重复这个步骤,直到比较完所有元素。
+     * @param intsort
+     */
     @RecordTime
     public static void bubbleSort(int[] intsort) {
         for (int i = intsort.length - 1; i > 0; i--) {
