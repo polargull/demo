@@ -20,5 +20,6 @@
         <module>boot</module>
         <module>algorithms</module>
         <module>util</module>
+        <module>feature</module>
     </modules>
 </project>

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>algorithms</artifactId>
+    <artifactId>feature</artifactId>
     <build>
         <plugins>
             <plugin>
@@ -24,9 +24,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>com.demo</groupId>
-            <artifactId>util</artifactId>
-            <version>1.0</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
         </dependency>
     </dependencies>
 
