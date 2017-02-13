@@ -22,4 +22,11 @@
         <module>util</module>
         <module>feature</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
+        </dependency>
+    </dependencies>
 </project>
