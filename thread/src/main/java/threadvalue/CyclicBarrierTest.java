@@ -19,6 +19,12 @@ public class CyclicBarrierTest {
     static AtomicLong totalMax = new AtomicLong();
     static long startTime;
 
+    /**
+     * -Xmn16m -Xms64m -Xmx2014m
+     * @param args
+     * @throws BrokenBarrierException
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws BrokenBarrierException, InterruptedException {
         SortTest.printOnOff = false;
         SortTest.outOnOff = false;
