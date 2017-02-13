@@ -1,5 +1,8 @@
+package sort;
+
 import com.demo.annotation.RecordTime;
 import com.demo.util.TestDataCreater;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,31 +11,33 @@ import java.util.Arrays;
 /**
  * Created by fuwei on 2017/2/4.
  */
+@Slf4j
 public class SortTest {
-    static boolean printOnOff = false;
-    static boolean outOnOff = true;
+    public static boolean printOnOff = false;
+    public static boolean outOnOff = false;
 
     public static void main(String[] args) {
-        int[] intsort = TestDataCreater.createRandomTestIntArray(10000 * 1);
-        testMethod("javaApiSort", intsort);
-        testMethod("bubbleSort", intsort);
-        testMethod("xuanzeSort", intsort);
+        int[] intsort1 = TestDataCreater.createRandomTestIntArray(10000 * 10000);
+        int[] intsort2 = TestDataCreater.createRandomTestIntArray(10000 * 10000);
+        int[] intsort3 = TestDataCreater.createRandomTestIntArray(10000 * 10000);
+        long startTime = System.currentTimeMillis();
+        testMethod("javaApiSort", intsort1);
+        testMethod("javaApiSort", intsort2);
+        testMethod("javaApiSort", intsort3);
+        log.info("总耗时:" + (System.currentTimeMillis() - startTime));
+//        testMethod("bubbleSort", intsort);
+//        testMethod("xuanzeSort", intsort);
     }
 
-    private static void testMethod(String method, int[] intsort) {
-        int n = intsort.length;
-        int[] copyArray = new int[n];
-        System.arraycopy(intsort, 0, copyArray, 0, n);
-        System.out.println("\n>>>>>> " + method);
-        System.out.print("src array:");
-        out(copyArray);
+    public static void testMethod(String method, int[] intsort) {
+        log(intsort);
         try {
             Method bubbleSort = SortTest.class.getMethod(method, int[].class);
             RecordTime annotation = bubbleSort.getAnnotation(RecordTime.class);
             long startTime = System.currentTimeMillis();
-            bubbleSort.invoke(new SortTest(), copyArray);
+            bubbleSort.invoke(new SortTest(), intsort);
             if (annotation != null) {
-                System.out.println("cost time:" + ((System.currentTimeMillis() - startTime)) / 1000);
+                log.info(">>>>>> cost time:" + ((System.currentTimeMillis() - startTime)) / 1000);
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -41,8 +46,14 @@ public class SortTest {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        System.out.print("sorted array:");
-        out(copyArray);
+        log(intsort);
+    }
+
+    private static void log(int[] intsort) {
+        if (!outOnOff) {
+            return;
+        }
+        log.info(out(intsort));
     }
 
     @RecordTime
@@ -61,6 +72,7 @@ public class SortTest {
 
     /**
      * 从数组第一个元素开始,依次比较元素,若左值大于右值交换位置,否则不交换,然后右边值继续和后面的元素比较,重复这个步骤,直到比较完所有元素。
+     *
      * @param intsort
      */
     @RecordTime
@@ -87,17 +99,15 @@ public class SortTest {
         Arrays.sort(intsort);
     }
 
-    public static void out(int[] intsort) {
-        if (!outOnOff) {
-            return;
-        }
+    public static String out(int[] intsort) {
+        StringBuilder sb = new StringBuilder("array:");
         for (int i = 0; i < intsort.length; i++) {
-            System.out.print(intsort[i] + " ");
+            sb.append(intsort[i]).append(" ");
             if (i == 1000) {
-                System.out.print("...");
+                sb.append("...");
                 break;
             }
         }
-        System.out.print("\n");
+        return sb.toString();
     }
 }
