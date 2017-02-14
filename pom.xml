@@ -21,6 +21,7 @@
         <module>algorithms</module>
         <module>util</module>
         <module>feature</module>
+        <module>mianshi</module>
     </modules>
     <dependencyManagement>
         <dependencies>
