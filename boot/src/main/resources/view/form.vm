@@ -55,7 +55,7 @@
             var $btnConditionMinus = $('button[name="btnConditionMinus"]');
             $btnConditionMinus.on('click', function(e) {
                 remove($(e.target));
-            });
+            })
         }
         function remove($curBtn){
             var $divRow = $curBtn.closest('.row');
@@ -82,6 +82,31 @@
 
     $("#test").click(jQuery.proxy(obj, "test"));
     });
+
+    var o1 = {
+        m1:function(var1) {
+            console.info("process m1, var:"+var1);
+        }
+    };
+    var o2 = {
+        m2:function(var2,var3) {
+            console.info("process m2, var:"+var2+" var:"+var3);
+        }
+    };
+    console.info(">>>>>>>>>>>>>>>");
+    trace(o1, 'm1')
+    trace(o2, 'm2');
+    o1.m1('vv1');
+    o2.m2('vv2', 'vv3');
+    function trace(o, m) {
+        var oriMethod = o[m];
+        o[m] = function() {
+            console.info("before....");
+            var result = oriMethod.apply(this, arguments);
+            console.info("after....");
+            return result;
+        };
+    }
 </script>
 <script id="tmp_new_condition" type="text/html">
 <div class="row">
