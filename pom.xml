@@ -22,6 +22,7 @@
         <module>util</module>
         <module>feature</module>
         <module>mianshi</module>
+        <module>spa</module>
     </modules>
     <dependencyManagement>
         <dependencies>
